@@ -1,5 +1,7 @@
 package com.closedsource.psymed.platform.appointmentandadministration.interfaces.rest.resources;
 
+import java.util.Date;
+
 /**
  * A resource class representing the details of a session in the Psymed platform.
  *
@@ -11,9 +13,8 @@ package com.closedsource.psymed.platform.appointmentandadministration.interfaces
  */
 public record SessionResource(
         Long id,
-        String patientId,
-        String professionalId,
-        String appointmentDate,
-        double sessionTime,
-        String noteId) {
+        Long patientId,
+        Long professionalId,
+        Date appointmentDate,
+        double sessionTime) {
 }

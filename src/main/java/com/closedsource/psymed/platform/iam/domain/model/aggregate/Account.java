@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -25,7 +26,6 @@ public class Account extends AuditableAbstractAggregateRoot<Account> {
 
     @NotBlank
     @Getter
-    @Size(min = 8, max = 20)
     private String password;
 
     @Getter
@@ -33,16 +33,6 @@ public class Account extends AuditableAbstractAggregateRoot<Account> {
     @Column(length = 20, nullable = false)
     private Roles role;
 
-    public Account(String userName, String password, Roles role) {
-        if (role == Roles.ROLE_PROFESSIONAL || role == Roles.ROLE_PATIENT) {
-            throw new IllegalArgumentException("Invalid role");
-        } else {
-            this.userName = userName;
-            this.password = password;
-            this.role = role;
-        }
-
-    }
 
     public Account(SignUpCommand command) {
         System.out.println("role from command %s".formatted(command.role()));
@@ -56,11 +46,28 @@ public class Account extends AuditableAbstractAggregateRoot<Account> {
         } else {
             throw new IllegalArgumentException("Invalid role");
         }
+    }
 
+    public Account(SignUpCommand command, String hashedPassword) {
+        System.out.println("role from command %s".formatted(command.role()));
+        System.out.println("role from enum %s".formatted(Roles.ROLE_PROFESSIONAL.toString()));
+
+        if(Objects.equals(command.role(), Roles.ROLE_PROFESSIONAL.toString())
+                || Objects.equals(command.role(), Roles.ROLE_PATIENT.toString())) {
+            this.userName = command.username();
+            this.password = hashedPassword;
+            this.role = Roles.valueOf(command.role());
+        } else {
+            throw new IllegalArgumentException("Invalid role");
+        }
     }
 
     public String getRoleInString() {
         return this.role.toString();
+    }
+
+    public Set<String> getAllRoles() {
+        return Set.of(Roles.ROLE_PATIENT.toString(), Roles.ROLE_PROFESSIONAL.toString());
     }
 
 }

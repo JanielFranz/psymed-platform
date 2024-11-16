@@ -14,21 +14,11 @@ import java.util.Date;
 public class AppointmentDate {
     private Date appointmentDate;
 
-    /**
-     * Default constructor that initializes the appointment date to the current date and time.
-     * Useful when the appointment date is not known at the moment of creation.
-     */
     public AppointmentDate() {
         this.appointmentDate = new Date();  // Default value: current date and time
     }
 
-    /**
-     * Constructor with validation to set the appointment date and time.
-     *
-     * @param appointmentDate The date and time of the appointment.
-     *                        It must be a future date.
-     * @throws IllegalArgumentException if the date is in the past.
-     */
+
     public AppointmentDate(Date appointmentDate) {
         if (appointmentDate.before(new Date())) {
             throw new IllegalArgumentException("Appointment date must be in the future.");

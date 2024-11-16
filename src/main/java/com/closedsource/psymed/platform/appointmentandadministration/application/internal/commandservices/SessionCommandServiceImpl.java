@@ -1,6 +1,7 @@
 package com.closedsource.psymed.platform.appointmentandadministration.application.internal.commandservices;
 
-import com.closedsource.psymed.platform.appointmentandadministration.application.internal.outboundservices.acl.AppointmentVersionOfExternalProfileService;
+import com.closedsource.psymed.platform.appointmentandadministration.application.internal.outboundservices.AppointmentVersionOfExternalProfileService;
+import com.closedsource.psymed.platform.appointmentandadministration.application.internal.outboundservices.acl.AppointmentVersionOfExternalProfileServiceImpl;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.exceptions.PatientNotFoundException;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.exceptions.ProfessionalNotFoundException;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates.Session;
@@ -18,7 +19,7 @@ public class SessionCommandServiceImpl implements SessionCommandService {
     private final SessionRepository sessionRepository;
     private final AppointmentVersionOfExternalProfileService externalProfileService; // Service to check patient and professional existence
 
-    public SessionCommandServiceImpl(SessionRepository sessionRepository, AppointmentVersionOfExternalProfileService externalProfileService) {
+    public SessionCommandServiceImpl(SessionRepository sessionRepository, AppointmentVersionOfExternalProfileServiceImpl externalProfileService) {
         this.sessionRepository = sessionRepository;
         this.externalProfileService = externalProfileService;
     }
@@ -28,14 +29,14 @@ public class SessionCommandServiceImpl implements SessionCommandService {
     @Transactional
     public Optional<Session> handle(CreateSessionCommand command) {
         // Check if the patient and professional exist
-        boolean patientExists = externalProfileService.existsPatientById(command.patientId().patientId());
-        boolean professionalExists = externalProfileService.existsProfessionalById(command.professionalId().professionalId());
+        boolean patientExists = externalProfileService.existsPatientById(command.patientId());
+        boolean professionalExists = externalProfileService.existsProfessionalById(command.professionalId());
 
         if (!patientExists) {
-            throw new PatientNotFoundException(command.patientId().patientId()); // Custom exception for patient not found
+            throw new PatientNotFoundException(command.patientId()); // Custom exception for patient not found
         }
         if (!professionalExists) {
-            throw new ProfessionalNotFoundException(command.professionalId().professionalId()); // Custom exception for professional not found
+            throw new ProfessionalNotFoundException(command.professionalId()); // Custom exception for professional not found
         }
 
         // Create a new session based on the command

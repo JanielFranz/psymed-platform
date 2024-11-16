@@ -20,7 +20,7 @@ import java.util.Optional;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
-@RequestMapping(value="api/v1/mood-states", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value="api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name="Mood States", description = "Mood States Endpoints")
 public class MoodStateController {
     private final MoodStateCommandService moodStateCommandService;
@@ -32,17 +32,17 @@ public class MoodStateController {
         this.moodStateQueryService = moodStateQueryService;
     }
 
-    @PostMapping
-        public ResponseEntity<MoodStateResource> createMoodState(@RequestBody CreateMoodStateRecordResource resource) {
+    @PostMapping("/patients/{patientId}/mood-states")
+        public ResponseEntity<MoodStateResource> createMoodState(@PathVariable Long patientId,  @RequestBody CreateMoodStateRecordResource resource) {
         Optional<MoodState> moodState = moodStateCommandService
-                .handle(CreateMoodStateRecordCommandFromResourceAssembler.toCommandFromResource(resource));
+                .handle(CreateMoodStateRecordCommandFromResourceAssembler.toCommandFromResource(resource, patientId));
         return moodState.map(mood -> new ResponseEntity<>(MoodStateResourceFromEntityAssembler
                         .toResourceFromEntity(mood), CREATED)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     //IN THE FUTURE THIS HAS TO WORK WITH PATIENT ID AND PROFESSIONAL ID
 
-    @GetMapping("/{patientId}")
+    @GetMapping("/patients/{patientId}/mood-states")
     public ResponseEntity<List<MoodStateResource>> getAllMoodStatesByPatientId(@PathVariable Long patientId) {
         var patientIdConstructed = new PatientId(patientId);
         var getAllMoodStatesByPatientIdQuery = new GetAllMoodStatesByPatientIdQuery(patientIdConstructed);

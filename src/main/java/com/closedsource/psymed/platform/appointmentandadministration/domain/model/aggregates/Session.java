@@ -68,11 +68,10 @@ public class Session extends AbstractAggregateRoot<Session> {
      */
     public Session(CreateSessionCommand command) {
         // You should now directly use the patientId and professionalId from the command, no need to wrap them again
-        this.patientId = command.patientId();
-        this.professionalId = command.professionalId();
-        this.appointmentDate = command.appointmentDate();
-        this.sessionTime = command.sessionTime();
-        this.note = null;  // Note is not mandatory at session creation
+        this.patientId = new PatientId(command.patientId());
+        this.professionalId = new ProfessionalId(command.professionalId());
+        this.appointmentDate = new AppointmentDate(command.appointmentDate());
+        this.sessionTime = new SessionTime(command.sessionTime());
     }
 
 

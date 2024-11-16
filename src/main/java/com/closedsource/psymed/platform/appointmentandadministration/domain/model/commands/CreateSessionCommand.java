@@ -5,24 +5,11 @@ import com.closedsource.psymed.platform.appointmentandadministration.domain.mode
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.ProfessionalId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.SessionTime;
 
-public record CreateSessionCommand(
-        PatientId patientId,
-        ProfessionalId professionalId,
-        AppointmentDate appointmentDate,
-        SessionTime sessionTime) {
+import java.util.Date;
 
-    public CreateSessionCommand {
-        if (patientId == null) {
-            throw new IllegalArgumentException("patientId cannot be null");
-        }
-        if (professionalId == null) {
-            throw new IllegalArgumentException("professionalId cannot be null");
-        }
-        if (appointmentDate == null || !appointmentDate.isValidAppointment()) {
-            throw new IllegalArgumentException("Invalid or null appointmentDate");
-        }
-        if (sessionTime == null || !sessionTime.isValidDuration()) {
-            throw new IllegalArgumentException("Invalid or null sessionTime");
-        }
-    }
+public record CreateSessionCommand(
+        Long patientId,
+        Long professionalId,
+        Date appointmentDate,
+        Double sessionTime) {
 }

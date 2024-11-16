@@ -1,6 +1,7 @@
 package com.closedsource.psymed.platform.patientreport.application.commandservices;
 
-import com.closedsource.psymed.platform.patientreport.application.outboundservices.acl.ExternalProfileService;
+import com.closedsource.psymed.platform.patientreport.application.outboundservices.ExternalProfileService;
+import com.closedsource.psymed.platform.patientreport.application.outboundservices.acl.ExternalProfileServiceImpl;
 import com.closedsource.psymed.platform.patientreport.domain.exceptions.PatientNotFoundException;
 import com.closedsource.psymed.platform.patientreport.domain.model.aggregates.BiologicalFunction;
 import com.closedsource.psymed.platform.patientreport.domain.model.commands.CreateBiologicalFunctionRecordCommand;
@@ -16,7 +17,7 @@ public class BiologicalFunctionCommandServiceImpl implements BiologicalFunctionC
     private final ExternalProfileService externalProfileService;
 
     public BiologicalFunctionCommandServiceImpl(BiologicalFunctionRepository biologicalFunctionRepository,
-                                                ExternalProfileService externalProfileService){
+                                                ExternalProfileServiceImpl externalProfileService){
         this.biologicalFunctionRepository = biologicalFunctionRepository;
         this.externalProfileService = externalProfileService;
 
