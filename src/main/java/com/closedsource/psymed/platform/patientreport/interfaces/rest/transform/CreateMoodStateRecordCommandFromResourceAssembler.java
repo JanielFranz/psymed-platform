@@ -5,7 +5,7 @@ import com.closedsource.psymed.platform.patientreport.interfaces.rest.resources.
 import com.closedsource.psymed.platform.patientreport.interfaces.rest.resources.MoodStateResource;
 
 public class CreateMoodStateRecordCommandFromResourceAssembler {
-    public static CreateMoodStateRecordCommand toCommandFromResource(CreateMoodStateRecordResource resource) {
-        return new CreateMoodStateRecordCommand(resource.status(), resource.patientId());
+    public static CreateMoodStateRecordCommand toCommandFromResource(CreateMoodStateRecordResource resource, Long patientId) {
+        return new CreateMoodStateRecordCommand(resource.status(), patientId);
     }
 }

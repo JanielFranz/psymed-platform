@@ -5,7 +5,7 @@ import com.closedsource.psymed.platform.iam.interfaces.rest.resources.Authentica
 
 public class AuthenticatedAccountResourceFromEntityAssembler {
     //TODO: Implement token in the future
-    public static AuthenticatedAccountResource toResourceFromEntity(Account entity) {
-        return new AuthenticatedAccountResource(entity.getId(), entity.getUserName());
+    public static AuthenticatedAccountResource toResourceFromEntity(Account entity, String token) {
+        return new AuthenticatedAccountResource(entity.getId(), entity.getRoleInString(), token);
     }
 }

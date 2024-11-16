@@ -3,23 +3,19 @@ package com.closedsource.psymed.platform.profiles.interfaces.rest;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetProfessionalProfileByIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.services.ProfessionalProfileCommandService;
 import com.closedsource.psymed.platform.profiles.domain.services.ProfessionalProfileQueryService;
-import com.closedsource.psymed.platform.profiles.infrastructure.persistence.jpa.repositories.ProfessionalProfileRepository;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.CreateProfessionalProfileResource;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.ProfileResource;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.transform.CreateProfessionalProfileCommandFromResourceAssembler;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
-
 @RestController
 @RequestMapping(value = "api/v1/professional-profiles", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Professional Profiles", description = "Professional Profiles Management Endpoints")
+@Tag(name = "Profiles", description = "Professional Profiles Management Endpoints")
 public class ProfessionalProfileController {
     private final ProfessionalProfileCommandService professionalProfileCommandService;
     private final ProfessionalProfileQueryService professionalProfileQueryService;

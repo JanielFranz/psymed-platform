@@ -31,11 +31,12 @@ public class AuthenticationController {
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedAccountResource> signIn(@RequestBody SignInResource signInResource) {
         var signInCommand = SignInCommandFromResourceAssembler.toCommandFromResource(signInResource);
-        var authenticatedAccount = accountCommandService.handle(signInCommand);
+        var authenticatedAccountResult = accountCommandService.handle(signInCommand);
 
-        if(authenticatedAccount.isEmpty()) return ResponseEntity.notFound().build();
-        //:TODO: Implement token in the future
-        var authenticatedAccountResource = AuthenticatedAccountResourceFromEntityAssembler.toResourceFromEntity(authenticatedAccount.get().getLeft());
+        if(authenticatedAccountResult.isEmpty()) return ResponseEntity.notFound().build();
+        var authenticatedAccount = authenticatedAccountResult.get();
+        var authenticatedAccountResource =
+                AuthenticatedAccountResourceFromEntityAssembler.toResourceFromEntity(authenticatedAccount.left, authenticatedAccount.right);
         return ResponseEntity.ok(authenticatedAccountResource);
     }
 
@@ -45,8 +46,8 @@ public class AuthenticationController {
         var account = accountCommandService.handle(signUpCommand);
 
         if(account.isEmpty()) return ResponseEntity.badRequest().build();
-
-        var accountResource = AccountResourceFromEntityAssembler.toResourceFromEntity(account.get());
+        var accountEntity = account.get();
+        var accountResource = AccountResourceFromEntityAssembler.toResourceFromEntity(accountEntity);
         return new ResponseEntity<>(accountResource, HttpStatus.CREATED);
     }
 

@@ -1,6 +1,7 @@
     package com.closedsource.psymed.platform.patientreport.application.commandservices;
 
-    import com.closedsource.psymed.platform.patientreport.application.outboundservices.acl.ExternalProfileService;
+    import com.closedsource.psymed.platform.patientreport.application.outboundservices.ExternalProfileService;
+    import com.closedsource.psymed.platform.patientreport.application.outboundservices.acl.ExternalProfileServiceImpl;
     import com.closedsource.psymed.platform.patientreport.domain.exceptions.PatientNotFoundException;
     import com.closedsource.psymed.platform.patientreport.domain.model.aggregates.MoodState;
     import com.closedsource.psymed.platform.patientreport.domain.model.commands.CreateMoodStateRecordCommand;
@@ -12,9 +13,11 @@
 
     @Service
     public class MoodStateCommandServiceImpl implements MoodStateCommandService {
+
         private final MoodStateRepository moodStateRecordRepository;
         private final ExternalProfileService externalProfileService;
-        public MoodStateCommandServiceImpl(MoodStateRepository moodStateRepository, ExternalProfileService externalProfileService) {
+
+        public MoodStateCommandServiceImpl(MoodStateRepository moodStateRepository, ExternalProfileServiceImpl externalProfileService) {
             this.moodStateRecordRepository = moodStateRepository;
             this.externalProfileService = externalProfileService;
         }

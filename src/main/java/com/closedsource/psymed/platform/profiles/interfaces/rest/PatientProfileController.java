@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/api/v1/patient-profiles", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Patient Profiles", description = "Patient Profiles Management Endpoints ")
+@Tag(name = "Profiles", description = "Patient Profiles Management Endpoints ")
 public class PatientProfileController {
     private final PatientProfileCommandService patientProfileCommandService;
     private final PatientProfileQueryService patientProfileQueryService;

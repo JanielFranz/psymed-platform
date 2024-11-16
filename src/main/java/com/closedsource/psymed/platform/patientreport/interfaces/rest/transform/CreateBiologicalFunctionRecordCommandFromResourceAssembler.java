@@ -6,7 +6,7 @@ import com.closedsource.psymed.platform.patientreport.interfaces.rest.resources.
 import com.closedsource.psymed.platform.patientreport.interfaces.rest.resources.CreateBiologicalFunctionRecordResource;
 
 public class CreateBiologicalFunctionRecordCommandFromResourceAssembler {
-    public static CreateBiologicalFunctionRecordCommand toCommandFromResource(CreateBiologicalFunctionRecordResource resource) {
-        return new CreateBiologicalFunctionRecordCommand(resource.hunger(), resource.hydration(), resource.sleep(),resource.energy(), resource.patientId());
+    public static CreateBiologicalFunctionRecordCommand toCommandFromResource(CreateBiologicalFunctionRecordResource resource, Long patientId) {
+        return new CreateBiologicalFunctionRecordCommand(resource.hunger(), resource.hydration(), resource.sleep(),resource.energy(), patientId);
     }
 }
