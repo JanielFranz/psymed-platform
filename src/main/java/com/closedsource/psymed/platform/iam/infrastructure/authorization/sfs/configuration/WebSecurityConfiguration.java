@@ -69,7 +69,7 @@ public class WebSecurityConfiguration {
             cors.setAllowedOrigins(List.of("*"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
-            cors.setAllowCredentials(true);
+            cors.setAllowCredentials(false); // Disallow credentials when using '*'
             return cors;
         }));
         http.csrf(AbstractHttpConfigurer::disable)
