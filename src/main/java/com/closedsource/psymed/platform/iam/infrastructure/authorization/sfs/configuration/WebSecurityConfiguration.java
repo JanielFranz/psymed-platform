@@ -63,13 +63,13 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CORS default configuration
+        // CORS configuration
         http.cors(configurer -> configurer.configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("*"));
-            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            cors.setAllowedHeaders(List.of("*"));
-            cors.setAllowCredentials(false); // Disallow credentials when using '*'
+            cors.setAllowedOrigins(List.of("http://localhost:4200")); // Explicitly allow this origin
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS for preflight
+            cors.setAllowedHeaders(List.of("*")); // Allow all headers
+            cors.setAllowCredentials(true); // Allow credentials like Authorization headers
             return cors;
         }));
         http.csrf(AbstractHttpConfigurer::disable)
