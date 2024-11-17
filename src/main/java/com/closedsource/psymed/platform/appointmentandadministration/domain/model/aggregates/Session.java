@@ -14,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +54,8 @@ public class Session extends AbstractAggregateRoot<Session> {
 
     @Getter
     @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
+
 
 
     @Column(nullable = false, updatable = false)
@@ -84,13 +86,19 @@ public class Session extends AbstractAggregateRoot<Session> {
     }
 
     public void addTaskToSession(String title, String description) {
+        if (tasks == null) {
+            tasks = new ArrayList<>();
+        }
         this.tasks.add(new Task(this, title, description));
     }
 
     public Task getLastTask() {
+        if (tasks == null || tasks.isEmpty()) {
+            throw new IllegalStateException("No tasks available in the session.");
+        }
         return this.tasks.get(tasks.size() - 1);
-
     }
+
 
     public Task getTaskById(Long taskId) {
         return this.tasks.stream()
