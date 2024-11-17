@@ -20,7 +20,6 @@ public class PillCommandServiceImpl implements PillCommandService {
         if (pillRepository.existsByName(command.name()))
             throw new IllegalArgumentException("There is a medication with the same name");
         var medication = new Pills(command);
-
         try {
             pillRepository.save(medication);
             return medication.getId();

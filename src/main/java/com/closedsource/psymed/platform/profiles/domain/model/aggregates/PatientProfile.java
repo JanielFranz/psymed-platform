@@ -69,6 +69,9 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
     public String getEmail() {
         return email.email();
     }
+    public AccountId getAccountId() {
+        return accountId;
+    }
 
 
 

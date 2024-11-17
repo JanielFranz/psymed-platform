@@ -1,10 +1,9 @@
 package com.closedsource.psymed.platform.appointmentandadministration.domain.services;
 
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates.Session;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetAllSessionsByPatientIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetAllSessionsByProfessionalIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetSessionByIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetSessionByPatientIdAndSessionIdQuery;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Note;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Task;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +46,15 @@ public interface SessionQueryService {
      */
     Optional<Session> handle(GetSessionByIdQuery query);
 
+
     /**
      * Handle the query to get all sessions.
      *
      * @return a list of all sessions
      */
     List<Session> handle();
+
+    Optional<Note> handle(GetNoteBySessionIdQuery query);
+
+    List<Task> handle(GetAllTasksBySessionIdQuery query);
 }

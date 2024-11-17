@@ -52,8 +52,8 @@ public class PillController {
 
         if(medication.isEmpty()) return ResponseEntity.notFound().build();
         var medicationEntity = medication.get();
-        var medicationSource = PillResourceFromEntityAssembler.toResourceFromEntity(medicationEntity);
-        return new ResponseEntity<>(medicationSource, HttpStatus.CREATED);
+        var medicationResource = PillResourceFromEntityAssembler.toResourceFromEntity(medicationEntity);
+        return new ResponseEntity<>(medicationResource, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get all Pills")
@@ -77,7 +77,7 @@ public class PillController {
             @ApiResponse(responseCode = "404", description = "Course not found")
     })
     @DeleteMapping("/{pillId}")
-    public ResponseEntity<?> deleteMedication(@PathVariable Long pillId){
+    public ResponseEntity<String> deleteMedication(@PathVariable Long pillId){
         var deleteMedicationCommand = new DeletePillsCommand(pillId);
         pillCommandService.handle(deleteMedicationCommand);
         return ResponseEntity.ok("Medication with given id successfully deleted");

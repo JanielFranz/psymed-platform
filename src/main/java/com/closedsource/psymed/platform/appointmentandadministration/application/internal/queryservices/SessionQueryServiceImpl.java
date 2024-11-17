@@ -1,10 +1,9 @@
 package com.closedsource.psymed.platform.appointmentandadministration.application.internal.queryservices;
 
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates.Session;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetAllSessionsByPatientIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetAllSessionsByProfessionalIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetSessionByIdQuery;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.GetSessionByPatientIdAndSessionIdQuery;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Note;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Task;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.queries.*;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.PatientId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.ProfessionalId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.services.SessionQueryService;
@@ -52,5 +51,25 @@ public class SessionQueryServiceImpl implements SessionQueryService {
     @Override
     public List<Session> handle() {
         return sessionRepository.findAll();
+    }
+
+    @Override
+    public Optional<Note> handle(GetNoteBySessionIdQuery query) {
+        if(!sessionRepository.existsById(query.sessionId())) {
+            throw new IllegalArgumentException("Session with id " + query.sessionId() + " does not exist.");
+        }
+        return sessionRepository.findById(query.sessionId())
+                .map(Session::getNote);
+    }
+
+    @Override
+    public List<Task> handle(GetAllTasksBySessionIdQuery query) {
+        if(!sessionRepository.existsById(query.sessionId())) {
+            throw new IllegalArgumentException("Session with id " + query.sessionId() + " does not exist.");
+        }
+        return sessionRepository.findById(query.sessionId()).stream()
+                .map(Session::getTasks)
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Session does not have any tasks."));
     }
 }
