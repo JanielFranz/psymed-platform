@@ -63,4 +63,8 @@ public class ProfessionalProfile extends AuditableAbstractAggregateRoot<Professi
     public String getEmail() {
         return email.email();
     }
+
+    public AccountId getAccountId() {
+        return accountId;
+    }
 }
