@@ -25,7 +25,6 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Session extends AbstractAggregateRoot<Session> {
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Id
