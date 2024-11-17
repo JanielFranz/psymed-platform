@@ -88,7 +88,8 @@ public class Session extends AbstractAggregateRoot<Session> {
     }
 
     public Task getLastTask() {
-        return this.tasks.getLast();
+        return this.tasks.get(tasks.size() - 1);
+
     }
 
     public Task getTaskById(Long taskId) {
