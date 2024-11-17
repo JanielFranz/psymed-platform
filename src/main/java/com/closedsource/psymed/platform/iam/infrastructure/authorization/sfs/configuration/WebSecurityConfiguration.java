@@ -30,8 +30,11 @@ public class WebSecurityConfiguration {
     private final BCryptHashingService hashingService;
     private final AuthenticationEntryPoint unauthorizedRequestHandlerEntryPoint;
 
-
-    public WebSecurityConfiguration(@Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService, BearerTokenService bearerTokenService, BCryptHashingService hashingService, AuthenticationEntryPoint unauthorizedRequestHandlerEntryPoint) {
+    public WebSecurityConfiguration(
+            @Qualifier("defaultUserDetailsService") UserDetailsService userDetailsService,
+            BearerTokenService bearerTokenService,
+            BCryptHashingService hashingService,
+            AuthenticationEntryPoint unauthorizedRequestHandlerEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.tokenService = bearerTokenService;
         this.hashingService = hashingService;
@@ -63,15 +66,16 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CORS default configuration
+        // Configure CORS settings to allow all origins and methods
         http.cors(configurer -> configurer.configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("*"));
-            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-            cors.setAllowedHeaders(List.of("*"));
+            cors.setAllowedOrigins(List.of("*")); // Allow all origins
+            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Allowed HTTP methods
+            cors.setAllowedHeaders(List.of("*")); // Allow all headers
+            cors.setAllowCredentials(false); // Disable credentials when using wildcard origin
             return cors;
         }));
-        http.csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable) // Disable CSRF
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandlerEntryPoint))
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -83,11 +87,10 @@ public class WebSecurityConfiguration {
                                 "/swagger-resources/**",
                                 "/webjars/**",
                                 "/api/v1/professional-profiles"
-                        ).permitAll()
-                        .anyRequest().authenticated());
-        http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+                        ).permitAll() // Public endpoints
+                        .anyRequest().authenticated()); // Secure all other endpoints
+        http.authenticationProvider(authenticationProvider()); // Use custom authentication provider
+        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class); // Add custom filter
         return http.build();
     }
-
 }
