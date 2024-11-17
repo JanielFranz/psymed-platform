@@ -1,6 +1,7 @@
 package com.closedsource.psymed.platform.appointmentandadministration.infrastructure.persistence.jpa.repositories;
 
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates.Session;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Note;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.PatientId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.ProfessionalId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,4 +37,7 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
      * @return an optional session if found
      */
     Optional<Session> findByPatientIdAndId(PatientId patientId, Long sessionId);
+
+    boolean existsByNote(Note note);
+
 }

@@ -1,20 +1,21 @@
 package com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates;
 
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Note;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.CreateSessionCommand;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Task;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.AppointmentDate;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.PatientId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.ProfessionalId;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.valueobjects.SessionTime;
-import com.closedsource.psymed.platform.sessionnotes.domain.model.entities.Note;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Session aggregate that represents a session between a patient and a professional.
@@ -45,11 +46,15 @@ public class Session extends AbstractAggregateRoot<Session> {
     @Getter
     private SessionTime sessionTime;
 
-    @ManyToOne
-    @JoinColumn(name = "notes")
     @Getter
-    @Setter
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "note_id")
     private Note note;
+
+    @Getter
+    @OneToMany(mappedBy = "session", cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
 
     @Column(nullable = false, updatable = false)
     @CreatedDate
@@ -74,5 +79,22 @@ public class Session extends AbstractAggregateRoot<Session> {
         this.sessionTime = new SessionTime(command.sessionTime());
     }
 
+    public void addNoteToSession(String title, String description) {
+        this.note = new Note(title, description);
+    }
+
+    public void addTaskToSession(String title, String description) {
+        this.tasks.add(new Task(this, title, description));
+    }
+
+    public Task getLastTask() {
+        return this.tasks.getLast();
+    }
+
+    public Task getTaskById(Long taskId) {
+        return this.tasks.stream()
+                .filter(task -> task.getId().equals(taskId))
+                .findFirst().orElseThrow(() -> new IllegalStateException("Task with id %s not found".formatted(taskId)));
+    }
 
 }

@@ -5,8 +5,12 @@ import com.closedsource.psymed.platform.appointmentandadministration.application
 import com.closedsource.psymed.platform.appointmentandadministration.domain.exceptions.PatientNotFoundException;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.exceptions.ProfessionalNotFoundException;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.aggregates.Session;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.AddNoteToSessionCommand;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.AddTaskToSessionCommand;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.CreateSessionCommand;
-import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.UpdateSessionNoteCommand;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.commands.UpdateTaskStatusToCompleteCommand;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Note;
+import com.closedsource.psymed.platform.appointmentandadministration.domain.model.entities.Task;
 import com.closedsource.psymed.platform.appointmentandadministration.domain.services.SessionCommandService;
 import com.closedsource.psymed.platform.appointmentandadministration.infrastructure.persistence.jpa.repositories.SessionRepository;
 import org.springframework.stereotype.Service;
@@ -46,14 +50,52 @@ public class SessionCommandServiceImpl implements SessionCommandService {
     }
 
     @Override
-    public Optional<Session> handle(UpdateSessionNoteCommand command) {
+    public Optional<Note> handle(AddNoteToSessionCommand command) {
 
-        var session = sessionRepository.findById(command.id()).get();
-        session.setNote(command.note());
+        var session = sessionRepository.findById(command.sessionId());
+        if(session.isEmpty()) throw new IllegalStateException("Session does not exist");
+        var sessionInstance = session.get();
 
-        var optionalSession = sessionRepository.save(session);
+        if(sessionInstance.getNote() != null) throw new IllegalStateException("Session already has a note");
 
-        return Optional.of(optionalSession);
+        sessionInstance.addNoteToSession(command.title(), command.description());
+
+        var note = sessionInstance.getNote();
+        try {
+            sessionRepository.save(sessionInstance);
+            return Optional.of(note);
+        } catch(Exception e) {
+            throw new IllegalArgumentException("Error adding a session: %s".formatted(e.getMessage()));
+        }
+    }
+
+    @Override
+    public Optional<Task> handle(AddTaskToSessionCommand command) {
+        if(!sessionRepository.existsById(command.sessionId())) throw new IllegalArgumentException("Session does not exist");
+        try {
+            var session = sessionRepository.findById(command.sessionId()).get();
+            session.addTaskToSession(command.title(), command.description());
+            sessionRepository.save(session);
+
+            var ActualTask = session.getLastTask();
+
+            return Optional.of(ActualTask);
+        } catch(Exception e) {
+            throw new IllegalArgumentException("Error adding a task: %s".formatted(e.getMessage()));
+        }
+    }
+
+    @Override
+    public void handle(UpdateTaskStatusToCompleteCommand command) {
+        if(!sessionRepository.existsById(command.sessionId())) throw new IllegalArgumentException("Session does not exist");
+        try{
+            var session = sessionRepository.findById(command.sessionId()).get();
+            var task = session.getTaskById(command.taskId());
+            task.completeTask();
+            sessionRepository.save(session);
+        } catch(Exception e) {
+            throw new IllegalArgumentException("Error updating task status: %s".formatted(e.getMessage()));
+        }
     }
 
 }
