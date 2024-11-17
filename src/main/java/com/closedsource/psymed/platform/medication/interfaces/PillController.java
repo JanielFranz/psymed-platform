@@ -38,9 +38,9 @@ public class PillController {
 
     @Operation(summary = "Create a new Pill")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Course created"),
+            @ApiResponse(responseCode = "201", description = "Pill created"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "404", description = "Pill not found")
     })
     @PostMapping
     public ResponseEntity<PillResource> createMedication(@RequestBody CreatePillResource createPillResource){
@@ -52,14 +52,14 @@ public class PillController {
 
         if(medication.isEmpty()) return ResponseEntity.notFound().build();
         var medicationEntity = medication.get();
-        var medicationSource = PillResourceFromEntityAssembler.toResourceFromEntity(medicationEntity);
-        return new ResponseEntity<>(medicationSource, HttpStatus.CREATED);
+        var medicationResource = PillResourceFromEntityAssembler.toResourceFromEntity(medicationEntity);
+        return new ResponseEntity<>(medicationResource, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get all Pills")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Courses found"),
-            @ApiResponse(responseCode = "404", description = "Courses not found")
+            @ApiResponse(responseCode = "200", description = "Pills found"),
+            @ApiResponse(responseCode = "404", description = "Pills not found")
     })
     @GetMapping
     public ResponseEntity<List<PillResource>> getAllMedications(){
@@ -73,11 +73,11 @@ public class PillController {
 
     @Operation(summary = "Delete a Pill")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Course deleted"),
-            @ApiResponse(responseCode = "404", description = "Course not found")
+            @ApiResponse(responseCode = "200", description = "Pill deleted"),
+            @ApiResponse(responseCode = "404", description = "Pill not found")
     })
     @DeleteMapping("/{pillId}")
-    public ResponseEntity<?> deleteMedication(@PathVariable Long pillId){
+    public ResponseEntity<String> deleteMedication(@PathVariable Long pillId){
         var deleteMedicationCommand = new DeletePillsCommand(pillId);
         pillCommandService.handle(deleteMedicationCommand);
         return ResponseEntity.ok("Medication with given id successfully deleted");

@@ -6,11 +6,11 @@ import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.Profi
 
 public class ProfileResourceFromEntityAssembler {
     public static ProfileResource toResourceFromEntity(PatientProfile entity) {
-        return new ProfileResource(entity.getId(), entity.getFullName(), entity.getEmail(), entity.getStreetAddress());
+        return new ProfileResource(entity.getId(), entity.getFullName(), entity.getEmail(), entity.getStreetAddress(),entity.getAccountId());
     }
 
 
     public static ProfileResource toResourceFromEntity(ProfessionalProfile entity){
-        return new ProfileResource(entity.getId(), entity.getFullName(), entity.getEmail(), entity.getStreetAddress());
+        return new ProfileResource(entity.getId(), entity.getFullName(), entity.getEmail(), entity.getStreetAddress(), entity.getAccountId());
     }
 }

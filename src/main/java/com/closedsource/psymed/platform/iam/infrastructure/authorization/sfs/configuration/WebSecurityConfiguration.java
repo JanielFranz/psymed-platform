@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,14 +64,14 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CORS default configuration
-        http.cors(configurer -> configurer.configurationSource( _ -> {
+        http.cors(configurer -> configurer.configurationSource(request -> {
             var cors = new CorsConfiguration();
             cors.setAllowedOrigins(List.of("*"));
             cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
             cors.setAllowedHeaders(List.of("*"));
             return cors;
         }));
-        http.csrf(csrfConfigurer -> csrfConfigurer.disable())
+        http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandlerEntryPoint))
                 .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -88,4 +89,5 @@ public class WebSecurityConfiguration {
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 }
