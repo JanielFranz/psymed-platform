@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name = "Biological Functions", description = "Biological Functions Endpoints")
+@Tag(name = "Patient Reports", description = "Controllers for managing patient reports")
 public class BiologicalFunctionController {
     private final BiologicalFunctionCommandService biologicalFunctionCommandService;
     private final BiologicalFunctionQueryService biologicalFunctionQueryService;

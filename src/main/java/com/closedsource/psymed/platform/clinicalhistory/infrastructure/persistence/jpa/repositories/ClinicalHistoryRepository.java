@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ClinicalHistoryRepository extends JpaRepository<ClinicalHistory,Long> {
-    Optional<ClinicalHistory> findById(Long id);
-    Optional<ClinicalHistory> findByPatientId(Long patientId);
+
 }

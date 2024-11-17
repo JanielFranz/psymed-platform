@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Getter
 @Entity
 public class ClinicalHistory extends AuditableAbstractAggregateRoot<ClinicalHistory>{
-    private Long patientId;
 
     @NotBlank
     @Column(nullable = false)
@@ -31,7 +30,6 @@ public class ClinicalHistory extends AuditableAbstractAggregateRoot<ClinicalHist
 
 
     public ClinicalHistory(CreateClinicalHistoryCommand command) {
-        this.patientId = command.patientId();
         this.background = command.background();
         this.consultationReason = command.consultationReason();
         this.consultationDate = command.consultationDate();

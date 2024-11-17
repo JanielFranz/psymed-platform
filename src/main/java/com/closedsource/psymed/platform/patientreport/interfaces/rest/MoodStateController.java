@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping(value="api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
-@Tag(name="Mood States", description = "Mood States Endpoints")
+@Tag(name="Patient Reports")
 public class MoodStateController {
     private final MoodStateCommandService moodStateCommandService;
     private final MoodStateQueryService moodStateQueryService;

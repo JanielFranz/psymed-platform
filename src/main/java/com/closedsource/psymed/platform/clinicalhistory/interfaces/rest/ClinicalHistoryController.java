@@ -29,7 +29,7 @@ import static org.springframework.http.HttpStatus.OK;
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "403", description = "The request was forbidden"),
 })
 @RestController
-@RequestMapping(value ="/api/v1/clinicalHistories", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value ="/api/v1/clinical-histories", produces = MediaType.APPLICATION_JSON_VALUE)
 @Tag(name = "Clinical History", description = "The Clinical History Controller")
 public class ClinicalHistoryController {
     private final ClinicalHistoryCommandService clinicalHistoryCommandService;
@@ -66,23 +66,7 @@ public class ClinicalHistoryController {
                 .orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
-    @Operation(summary = "Get all clinical histories by patient id", description = "Get all clinical histories by patient id")
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "The clinical histories were retrieved successfully"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "The request was not successful"),
-    })
-    @GetMapping("/patient/{id}")
-    public ResponseEntity<List<ClinicalHistoryResource>> getClinicalHistoriesByPatientEmail(@PathVariable Long id) {
-        var query = new GetClinicalHistoryByPatientIdQuery(id);
-        Optional<ClinicalHistory> clinicalHistories = this.clinicalHistoryQueryService.handle(query);
 
-        if (clinicalHistories.isEmpty()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        List<ClinicalHistoryResource> resources = clinicalHistories.stream().map(ClinicalHistoryResourceFromEntityAssembler::toResourceFromEntity).toList();
-        return ResponseEntity.ok(resources);
-    }
 
 
 }

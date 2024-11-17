@@ -23,7 +23,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/v1/pills", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Pill", description = "All medication related endpoints")
+@Tag(name = "Medication", description = "All medication related endpoints")
 public class PillController {
 
     private final PillCommandService pillCommandService;

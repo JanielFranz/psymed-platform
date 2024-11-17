@@ -22,9 +22,12 @@ public class ClinicalHistoryCommandServiceImpl implements ClinicalHistoryCommand
 
         ClinicalHistory clinicalHistory = new ClinicalHistory(command);
 
-        // patient.updateClinicalHistoryStatus();
-
-        var clinicalHistorySaved = this.clinicalHistoryRepository.save(clinicalHistory);
-        return Optional.of(clinicalHistorySaved);
+        try{
+            var createdClinicalHistory = this.clinicalHistoryRepository.save(clinicalHistory);
+            return Optional.of(createdClinicalHistory);
+        }catch(Exception e){
+            throw new IllegalArgumentException("Error creating the clinical history record: %s"
+                    .formatted(e.getMessage()));
+        }
     }
 }

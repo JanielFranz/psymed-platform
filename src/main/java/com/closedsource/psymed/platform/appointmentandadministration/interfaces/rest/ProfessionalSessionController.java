@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/v1/professionals/{professionalId}/sessions", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Sessions")
+@Tag(name = "Professional Sessions",  description = "Controller for manage sessions for a professional")
 public class ProfessionalSessionController {
     private final SessionQueryService sessionQueryService;
 

@@ -7,7 +7,6 @@ public class ClinicalHistoryResourceFromEntityAssembler {
     public static ClinicalHistoryResource toResourceFromEntity(ClinicalHistory entity) {
         return new ClinicalHistoryResource(
                 entity.getId(),
-                entity.getPatientId(),
                 entity.getBackground(),
                 entity.getConsultationReason(),
                 entity.getConsultationDate()

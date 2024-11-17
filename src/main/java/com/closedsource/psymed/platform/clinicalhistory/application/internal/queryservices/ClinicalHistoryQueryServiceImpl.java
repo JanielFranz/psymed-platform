@@ -21,6 +21,6 @@ public class ClinicalHistoryQueryServiceImpl implements ClinicalHistoryQueryServ
     }
     @Override
     public Optional<ClinicalHistory> handle(GetClinicalHistoryByPatientIdQuery query) {
-        return this.clinicalHistoryRepository.findByPatientId(query.patientId());
+        return this.clinicalHistoryRepository.findById(query.patientId());
     }
 }

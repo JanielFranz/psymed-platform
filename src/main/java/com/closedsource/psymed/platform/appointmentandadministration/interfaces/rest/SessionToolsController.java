@@ -24,7 +24,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping(value = "/api/v1/sessions/{sessionId}")
-@Tag(name = "Session Tools")
+@Tag(name = "Session Tools", description = "Controller for manage notes and tasks of a session")
 public class SessionToolsController {
     private final SessionCommandService sessionCommandService;
     private final SessionQueryService sessionQueryService;
