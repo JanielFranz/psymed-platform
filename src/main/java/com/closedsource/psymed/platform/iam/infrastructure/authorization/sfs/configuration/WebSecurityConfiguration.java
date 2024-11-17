@@ -63,19 +63,21 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // CORS configuration
-        http.cors(configurer -> configurer.configurationSource(request -> {
-            var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:4200")); // Explicitly allow this origin
-            cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS for preflight
-            cors.setAllowedHeaders(List.of("*")); // Allow all headers
-            cors.setAllowCredentials(true); // Allow credentials like Authorization headers
-            return cors;
+        // Configure CORS
+        http.cors(cors -> cors.configurationSource(request -> {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Allow your Angular app
+            configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Include OPTIONS for preflight requests
+            configuration.setAllowedHeaders(List.of("*")); // Allow all headers
+            configuration.setAllowCredentials(true); // Allow credentials (e.g., cookies or Authorization headers)
+            return configuration;
         }));
+
+        // Disable CSRF since you are using JWT (stateless session)
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(unauthorizedRequestHandlerEntryPoint))
-                .sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/authentication/**",
                                 "/v3/api-docs/**",
@@ -86,8 +88,11 @@ public class WebSecurityConfiguration {
                                 "/api/v1/professional-profiles"
                         ).permitAll()
                         .anyRequest().authenticated());
+
+        // Add authentication filter
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
