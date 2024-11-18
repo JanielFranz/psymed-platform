@@ -1,6 +1,6 @@
 package com.closedsource.psymed.platform.medication.domain.model.commands;
 
-public record CreatePillsCommand(String name, String description) {
+public record CreatePillsCommand(String name, String description, Long patientId) {
 
     public CreatePillsCommand {
         if(name == null || name.isBlank())

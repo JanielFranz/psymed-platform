@@ -4,9 +4,6 @@ import com.closedsource.psymed.platform.clinicalhistory.domain.model.queries.Get
 import com.closedsource.psymed.platform.clinicalhistory.domain.service.ClinicalHistoryQueryService;
 import com.closedsource.psymed.platform.clinicalhistory.interfaces.rest.resources.ClinicalHistoryResource;
 import com.closedsource.psymed.platform.clinicalhistory.interfaces.rest.transform.ClinicalHistoryResourceFromEntityAssembler;
-import com.closedsource.psymed.platform.profiles.domain.model.queries.GetProfessionalProfileByIdQuery;
-import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.ProfileResource;
-import com.closedsource.psymed.platform.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
