@@ -1,12 +1,10 @@
 package com.closedsource.psymed.platform.iam.domain.model.aggregate;
 
 import com.closedsource.psymed.platform.iam.domain.model.commands.SignUpCommand;
+import com.closedsource.psymed.platform.iam.domain.model.valueobjects.ProfileId;
 import com.closedsource.psymed.platform.iam.domain.model.valueobjects.Roles;
 import com.closedsource.psymed.platform.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -33,6 +31,8 @@ public class Account extends AuditableAbstractAggregateRoot<Account> {
     @Column(length = 20, nullable = false)
     private Roles role;
 
+    @Embedded
+    private ProfileId profileId;
 
     public Account(SignUpCommand command) {
         System.out.println("role from command %s".formatted(command.role()));

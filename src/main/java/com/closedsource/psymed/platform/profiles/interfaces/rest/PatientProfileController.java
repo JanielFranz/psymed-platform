@@ -1,7 +1,9 @@
 package com.closedsource.psymed.platform.profiles.interfaces.rest;
 
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetAllPatientProfilesQuery;
+import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByAccountIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByIdQuery;
+import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.AccountId;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileCommandService;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileQueryService;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.CreatePatientProfileResource;
@@ -46,6 +48,15 @@ public class PatientProfileController {
     public ResponseEntity<ProfileResource> getProfileById(@PathVariable Long profileId) {
         var getProfileByIdQuery = new GetPatientProfileByIdQuery(profileId);
         var profile = patientProfileQueryService.handle(getProfileByIdQuery);
+        if (profile.isEmpty()) return ResponseEntity.notFound().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<ProfileResource> getProfileByAccountId(@PathVariable Long accountId) {
+        var getPatientProfileByIdQuery = new GetPatientProfileByAccountIdQuery(new AccountId(accountId));
+        var profile = patientProfileQueryService.handle(getPatientProfileByIdQuery);
         if (profile.isEmpty()) return ResponseEntity.notFound().build();
         var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
         return ResponseEntity.ok(profileResource);

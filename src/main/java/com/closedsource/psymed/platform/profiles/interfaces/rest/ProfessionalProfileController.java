@@ -1,6 +1,8 @@
 package com.closedsource.psymed.platform.profiles.interfaces.rest;
 
+import com.closedsource.psymed.platform.profiles.domain.model.queries.GetProfessionalProfileByAccountIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetProfessionalProfileByIdQuery;
+import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.AccountId;
 import com.closedsource.psymed.platform.profiles.domain.services.ProfessionalProfileCommandService;
 import com.closedsource.psymed.platform.profiles.domain.services.ProfessionalProfileQueryService;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.CreateProfessionalProfileResource;
@@ -41,6 +43,15 @@ public class ProfessionalProfileController {
     public ResponseEntity<ProfileResource> getProfileById(@PathVariable Long profileId) {
         var getProfileByIdQuery = new GetProfessionalProfileByIdQuery(profileId);
         var profile = professionalProfileQueryService.handle(getProfileByIdQuery);
+        if(profile.isEmpty()) return ResponseEntity.notFound().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
+    @GetMapping("/account/{accountId}")
+    public ResponseEntity<ProfileResource> getProfileByAccountId(@PathVariable Long accountId) {
+        var getProfessionalProfileByAccountIdQuery = new GetProfessionalProfileByAccountIdQuery(new AccountId(accountId));
+        var profile = professionalProfileQueryService.handle(getProfessionalProfileByAccountIdQuery);
         if(profile.isEmpty()) return ResponseEntity.notFound().build();
         var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
         return ResponseEntity.ok(profileResource);
