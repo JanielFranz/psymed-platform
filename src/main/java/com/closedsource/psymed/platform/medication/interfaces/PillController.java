@@ -3,6 +3,7 @@ package com.closedsource.psymed.platform.medication.interfaces;
 import com.closedsource.psymed.platform.medication.domain.model.commands.DeletePillsCommand;
 import com.closedsource.psymed.platform.medication.domain.model.queries.GetAllPillsQuery;
 import com.closedsource.psymed.platform.medication.domain.model.queries.GetPillsByIdQuery;
+import com.closedsource.psymed.platform.medication.domain.model.queries.GetPillsByPatientId;
 import com.closedsource.psymed.platform.medication.domain.services.PillCommandService;
 import com.closedsource.psymed.platform.medication.domain.services.PillQueryService;
 import com.closedsource.psymed.platform.medication.interfaces.rest.resources.CreatePillResource;
@@ -70,6 +71,18 @@ public class PillController {
                 .toList();
         return ResponseEntity.ok(medicationResources);
     }
+
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<PillResource>> getMedicationByPatientId(@PathVariable Long patientId){
+        var getPillsByPatientId = new GetPillsByPatientId(patientId);
+        var medications = pillQueryService.handle(getPillsByPatientId);
+        if(medications.isEmpty()) return ResponseEntity.notFound().build();
+        var medicationResources = medications.stream()
+                .map(PillResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return ResponseEntity.ok(medicationResources);
+    }
+
 
     @Operation(summary = "Delete a Pill")
     @ApiResponses(value = {

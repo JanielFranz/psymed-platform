@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface PillRepository extends JpaRepository<Pills, Long> {
     Optional<Pills> findByName(String name);
     boolean existsByName(String name);
+
+
     //boolean existsById(Long id);
 }
