@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PatientProfileRepository extends JpaRepository<PatientProfile, Long> {
     boolean existsByEmail(Email emailAddress);
+    Long findClinicalHistoryIdById(Long patientId);
 }

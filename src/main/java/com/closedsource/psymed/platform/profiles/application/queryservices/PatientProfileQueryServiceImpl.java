@@ -2,6 +2,7 @@ package com.closedsource.psymed.platform.profiles.application.queryservices;
 
 import com.closedsource.psymed.platform.profiles.domain.model.aggregates.PatientProfile;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetAllPatientProfilesQuery;
+import com.closedsource.psymed.platform.profiles.domain.model.queries.GetClinicalHistoryIdByPatientIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileQueryService;
 import com.closedsource.psymed.platform.profiles.infrastructure.persistence.jpa.repositories.PatientProfileRepository;
@@ -27,5 +28,10 @@ public class PatientProfileQueryServiceImpl implements PatientProfileQueryServic
     @Override
     public List<PatientProfile> handle(GetAllPatientProfilesQuery query) {
         return patientProfileRepository.findAll();
+    }
+
+    @Override
+    public Long handle(GetClinicalHistoryIdByPatientIdQuery query) {
+        return patientProfileRepository.findClinicalHistoryIdById(query.patientId());
     }
 }

@@ -1,5 +1,6 @@
 package com.closedsource.psymed.platform.clinicalhistory.application.internal.queryservices;
 
+import com.closedsource.psymed.platform.clinicalhistory.application.internal.outboundservices.CExternalProfileService;
 import com.closedsource.psymed.platform.clinicalhistory.domain.model.aggregates.ClinicalHistory;
 import com.closedsource.psymed.platform.clinicalhistory.domain.model.queries.GetClinicalHistoryByIdQuery;
 import com.closedsource.psymed.platform.clinicalhistory.domain.model.queries.GetClinicalHistoryByPatientIdQuery;
@@ -12,8 +13,10 @@ import java.util.Optional;
 @Service
 public class ClinicalHistoryQueryServiceImpl implements ClinicalHistoryQueryService {
     private final ClinicalHistoryRepository clinicalHistoryRepository;
-    public ClinicalHistoryQueryServiceImpl(ClinicalHistoryRepository clinicalHistoryRepository) {
+    private final CExternalProfileService externalProfileService;
+    public ClinicalHistoryQueryServiceImpl(ClinicalHistoryRepository clinicalHistoryRepository, CExternalProfileService externalProfileService) {
         this.clinicalHistoryRepository = clinicalHistoryRepository;
+        this.externalProfileService = externalProfileService;
     }
     @Override
     public Optional<ClinicalHistory> handle(GetClinicalHistoryByIdQuery query) {
@@ -21,6 +24,7 @@ public class ClinicalHistoryQueryServiceImpl implements ClinicalHistoryQueryServ
     }
     @Override
     public Optional<ClinicalHistory> handle(GetClinicalHistoryByPatientIdQuery query) {
-        return this.clinicalHistoryRepository.findById(query.patientId());
+        var clinicalHistoryId = externalProfileService.getClinicalHistoryIdByPatientId(query.patientId());
+        return this.clinicalHistoryRepository.findById(clinicalHistoryId);
     }
 }
