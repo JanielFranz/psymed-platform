@@ -3,6 +3,7 @@ package com.closedsource.psymed.platform.profiles.interfaces.rest;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetAllPatientProfilesQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByAccountIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByIdQuery;
+import com.closedsource.psymed.platform.profiles.domain.model.queries.GetPatientProfileByProfessionalIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.AccountId;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileCommandService;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileQueryService;
@@ -63,12 +64,14 @@ public class PatientProfileController {
     }
 
     @GetMapping("/professional/{professionalId}")
-    public ResponseEntity<ProfileResource> getProfileByProfessionalId(@PathVariable Long professionalId) {
-        var getPatientProfileByProfessionalIdQuery = new GetPatientProfileByAccountIdQuery(new AccountId(professionalId));
-        var profile = patientProfileQueryService.handle(getPatientProfileByProfessionalIdQuery);
-        if (profile.isEmpty()) return ResponseEntity.notFound().build();
-        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
-        return ResponseEntity.ok(profileResource);
+    public ResponseEntity<List<ProfileResource>> getProfilesByProfessionalId(@PathVariable Long professionalId) {
+        var getPatientProfileByProfessionalIdQuery = new GetPatientProfileByProfessionalIdQuery(professionalId);
+        var profiles = patientProfileQueryService.handle(getPatientProfileByProfessionalIdQuery);
+        if (profiles.isEmpty()) return ResponseEntity.notFound().build();
+        var profileResources = profiles.stream()
+                .map(ProfileResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(profileResources);
     }
 
     @GetMapping

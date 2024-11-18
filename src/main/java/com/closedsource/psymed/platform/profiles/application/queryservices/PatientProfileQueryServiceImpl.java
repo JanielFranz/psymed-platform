@@ -38,7 +38,7 @@ public class PatientProfileQueryServiceImpl implements PatientProfileQueryServic
         return patientProfileRepository.findByAccountId(query.accountId());
     }
 
-    public Optional<PatientProfile> handle(GetPatientProfileByProfessionalIdQuery query) {
+    public List<PatientProfile> handle(GetPatientProfileByProfessionalIdQuery query) {
         return patientProfileRepository.findByProfessionalId(query.professionalId());
     }
 
