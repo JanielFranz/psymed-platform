@@ -30,6 +30,10 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
     @Embedded
     private AccountId accountId;
 
+
+    private Long professionalId;
+
+
     @Getter
     @Embedded
     private ClinicalHistoryId clinicalHistoryId;
@@ -45,6 +49,7 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
         this.email = new Email(command.email());
         this.streetAddress = new StreetAddress(command.street(), command.city(), command.country());
         this.accountId = accountId;
+        this.professionalId = command.professionalId();
     }
 
     public void addClinicalHistory(Long id) {
@@ -76,6 +81,9 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
     }
     public AccountId getAccountId() {
         return accountId;
+    }
+    public Long getProfessionalId() {
+        return professionalId;
     }
 
 

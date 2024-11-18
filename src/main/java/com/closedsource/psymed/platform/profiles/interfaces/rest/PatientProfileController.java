@@ -62,6 +62,15 @@ public class PatientProfileController {
         return ResponseEntity.ok(profileResource);
     }
 
+    @GetMapping("/professional/{professionalId}")
+    public ResponseEntity<ProfileResource> getProfileByProfessionalId(@PathVariable Long professionalId) {
+        var getPatientProfileByProfessionalIdQuery = new GetPatientProfileByAccountIdQuery(new AccountId(professionalId));
+        var profile = patientProfileQueryService.handle(getPatientProfileByProfessionalIdQuery);
+        if (profile.isEmpty()) return ResponseEntity.notFound().build();
+        var profileResource = ProfileResourceFromEntityAssembler.toResourceFromEntity(profile.get());
+        return ResponseEntity.ok(profileResource);
+    }
+
     @GetMapping
     public ResponseEntity<List<ProfileResource>> getAllProfiles() {
         var getAllProfilesQuery = new GetAllPatientProfilesQuery();

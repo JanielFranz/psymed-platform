@@ -7,5 +7,6 @@ public record ProfileResource(
         String fullName,
         String email,
         String streetAddress,
-        AccountId accountId
+        AccountId accountId,
+        Long professionalId
 ) { }

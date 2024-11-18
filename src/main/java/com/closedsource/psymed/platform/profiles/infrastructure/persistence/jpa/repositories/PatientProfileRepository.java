@@ -11,4 +11,5 @@ public interface PatientProfileRepository extends JpaRepository<PatientProfile, 
     boolean existsByEmail(Email emailAddress);
     Optional<PatientProfile> findByAccountId(AccountId accountId);
     Long findClinicalHistoryIdById(Long patientId);
+    Optional<PatientProfile> findByProfessionalId(Long accountId);
 }

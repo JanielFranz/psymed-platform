@@ -9,6 +9,7 @@ import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.Creat
 import com.closedsource.psymed.platform.profiles.interfaces.rest.resources.ProfileResource;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.transform.CreateProfessionalProfileCommandFromResourceAssembler;
 import com.closedsource.psymed.platform.profiles.interfaces.rest.transform.ProfileResourceFromEntityAssembler;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -48,6 +49,10 @@ public class ProfessionalProfileController {
         return ResponseEntity.ok(profileResource);
     }
 
+
+
+
+    @Operation(summary = "Get Professional Profile by Account ID")
     @GetMapping("/account/{accountId}")
     public ResponseEntity<ProfileResource> getProfileByAccountId(@PathVariable Long accountId) {
         var getProfessionalProfileByAccountIdQuery = new GetProfessionalProfileByAccountIdQuery(new AccountId(accountId));
