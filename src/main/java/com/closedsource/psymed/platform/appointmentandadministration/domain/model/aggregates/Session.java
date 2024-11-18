@@ -29,7 +29,6 @@ public class Session extends AbstractAggregateRoot<Session> {
     @Getter
     @Id
     private Long id;
-
     @Embedded
     @Getter
     private PatientId patientId;
