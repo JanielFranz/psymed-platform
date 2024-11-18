@@ -38,9 +38,9 @@ public class PillQueryServiceImpl implements PillQueryService {
     }
 
     @Override
-    public Optional<Pills> handle(GetPillsByPatientId getPillsByPatientId) {
+    public List<Pills> handle(GetPillsByPatientId getPillsByPatientId) {
 
-        return pillRepository.findById(getPillsByPatientId.patientId());
+        return pillRepository.findByPatientId(getPillsByPatientId.patientId());
     }
 
 

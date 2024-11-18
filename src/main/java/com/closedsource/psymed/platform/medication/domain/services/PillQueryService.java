@@ -17,5 +17,5 @@ public interface PillQueryService {
 
     Optional<Pills> handle(GetPillsByIdQuery getPillsByIdQuery);
 
-    Optional<Pills> handle(GetPillsByPatientId getPillsByPatientId);
+    List<Pills> handle(GetPillsByPatientId getPillsByPatientId);
 }

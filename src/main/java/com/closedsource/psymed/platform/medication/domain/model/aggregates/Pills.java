@@ -19,6 +19,11 @@ public class Pills extends AuditableAbstractAggregateRoot<Pills> {
     private String description;
     private Long patientId;
 
+    @Column(name = "`dosage`")
+    private String interval;
+
+    private String quantity;
+
     public Pills(String name, String description) {
         this.name = name;
         this.description = description;
@@ -28,8 +33,9 @@ public class Pills extends AuditableAbstractAggregateRoot<Pills> {
         this.name = command.name();
         this.description = command.description();
         this.patientId = command.patientId();
+        this.interval = command.interval();
+        this.quantity = command.quantity();
     }
-
 
     public Pills() {
 
