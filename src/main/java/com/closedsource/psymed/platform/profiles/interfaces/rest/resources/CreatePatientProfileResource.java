@@ -7,5 +7,6 @@ public record CreatePatientProfileResource(    String firstName,
                                                String country,
                                                String email,
                                                String username,
-                                               String password
+                                               String password,
+                                               Long professionalId
                                                ) { }

@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/v1/patients/{patientId}/sessions", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Sessions")
+@Tag(name = "Patient Sessions", description = "Controller for manage sessions for a patient")
 public class PatientSessionController {
     private final SessionQueryService sessionQueryService;
 
@@ -28,7 +28,7 @@ public class PatientSessionController {
         this.sessionQueryService = sessionQueryService;
     }
 
-    @Operation(summary = "Get all sessions of a patient",
+    @Operation(summary = "Get all sessions for a patient",
             description = "Retrieve all sessions for a given patient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sessions found"),

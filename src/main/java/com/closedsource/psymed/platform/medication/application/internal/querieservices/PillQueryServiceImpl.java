@@ -4,6 +4,7 @@ import com.closedsource.psymed.platform.medication.domain.model.aggregates.Pills
 import com.closedsource.psymed.platform.medication.domain.model.queries.GetAllPillsQuery;
 import com.closedsource.psymed.platform.medication.domain.model.queries.GetPillsByIdQuery;
 import com.closedsource.psymed.platform.medication.domain.model.queries.GetPillByNameQuery;
+import com.closedsource.psymed.platform.medication.domain.model.queries.GetPillsByPatientId;
 import com.closedsource.psymed.platform.medication.domain.services.PillQueryService;
 import com.closedsource.psymed.platform.medication.infrastructure.persistence.jpa.repositories.PillRepository;
 import org.springframework.stereotype.Service;
@@ -35,4 +36,12 @@ public class PillQueryServiceImpl implements PillQueryService {
 
         return pillRepository.findById(getPillsByIdQuery.medicationId());
     }
+
+    @Override
+    public List<Pills> handle(GetPillsByPatientId getPillsByPatientId) {
+
+        return pillRepository.findByPatientId(getPillsByPatientId.patientId());
+    }
+
+
 }

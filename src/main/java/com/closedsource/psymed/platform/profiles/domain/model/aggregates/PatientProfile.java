@@ -1,10 +1,7 @@
 package com.closedsource.psymed.platform.profiles.domain.model.aggregates;
 
 import com.closedsource.psymed.platform.profiles.domain.model.commands.CreatePatientProfileCommand;
-import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.AccountId;
-import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.Email;
-import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.PersonName;
-import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.StreetAddress;
+import com.closedsource.psymed.platform.profiles.domain.model.valueobjects.*;
 import com.closedsource.psymed.platform.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,6 +30,14 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
     @Embedded
     private AccountId accountId;
 
+
+    private Long professionalId;
+
+
+    @Getter
+    @Embedded
+    private ClinicalHistoryId clinicalHistoryId;
+
     public PatientProfile(String firstName, String lastName, String street, String city, String country, String email){
         this.personName = new PersonName(firstName, lastName);
         this.streetAddress = new StreetAddress(street, city, country);
@@ -44,6 +49,11 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
         this.email = new Email(command.email());
         this.streetAddress = new StreetAddress(command.street(), command.city(), command.country());
         this.accountId = accountId;
+        this.professionalId = command.professionalId();
+    }
+
+    public void addClinicalHistory(Long id) {
+        this.clinicalHistoryId = new ClinicalHistoryId(id);
     }
 
     public void updateEmail(String email) {
@@ -71,6 +81,9 @@ public class PatientProfile extends AuditableAbstractAggregateRoot<PatientProfil
     }
     public AccountId getAccountId() {
         return accountId;
+    }
+    public Long getProfessionalId() {
+        return professionalId;
     }
 
 

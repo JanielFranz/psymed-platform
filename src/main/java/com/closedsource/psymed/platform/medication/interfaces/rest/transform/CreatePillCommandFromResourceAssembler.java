@@ -6,6 +6,6 @@ import com.closedsource.psymed.platform.medication.interfaces.rest.resources.Cre
 public class CreatePillCommandFromResourceAssembler {
     public static CreatePillsCommand toCommandFromResource (CreatePillResource resource)
     {
-        return new CreatePillsCommand(resource.name(), resource.description());
+        return new CreatePillsCommand(resource.name(), resource.description(), resource.patientId(), resource.interval(), resource.quantity());
     }
 }

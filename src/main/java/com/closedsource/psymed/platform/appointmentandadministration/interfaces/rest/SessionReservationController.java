@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/api/v1/professionals/{professionalId}/patients/{patientId}/sessions", produces = APPLICATION_JSON_VALUE)
-@Tag(name = "Sessions")
+@Tag(name = "Professional Sessions")
 public class SessionReservationController {
     private final SessionCommandService sessionCommandService;
     private final SessionQueryService sessionQueryService;

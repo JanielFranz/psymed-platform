@@ -5,6 +5,7 @@ import com.closedsource.psymed.platform.medication.domain.model.commands.DeleteP
 
 public interface PillCommandService {
     Long handle (CreatePillsCommand command);
+
     void handle (DeletePillsCommand command);
 
 

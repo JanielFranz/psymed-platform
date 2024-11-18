@@ -5,6 +5,6 @@ import com.closedsource.psymed.platform.medication.interfaces.rest.resources.Pil
 
 public class PillResourceFromEntityAssembler {
     public static PillResource toResourceFromEntity(Pills entity){
-        return new PillResource(entity.getId(), entity.getName(), entity.getDescription());
+        return new PillResource(entity.getId(), entity.getName(), entity.getDescription(),entity.getPatientId(), entity.getInterval(), entity.getQuantity());
     }
 }

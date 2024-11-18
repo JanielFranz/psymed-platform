@@ -2,7 +2,9 @@ package com.closedsource.psymed.platform.profiles.interfaces.acl.service;
 
 import com.closedsource.psymed.platform.profiles.domain.model.commands.CheckPatientProfileByIdCommand;
 import com.closedsource.psymed.platform.profiles.domain.model.commands.CheckProfessionalProfileByIdCommand;
+import com.closedsource.psymed.platform.profiles.domain.model.queries.GetClinicalHistoryIdByPatientIdQuery;
 import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileCommandService;
+import com.closedsource.psymed.platform.profiles.domain.services.PatientProfileQueryService;
 import com.closedsource.psymed.platform.profiles.domain.services.ProfessionalProfileCommandService;
 import com.closedsource.psymed.platform.profiles.interfaces.acl.ProfilesContextFacade;
 import org.springframework.stereotype.Service;
@@ -12,11 +14,13 @@ public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
     //#region DI
     private final PatientProfileCommandService patientProfileCommandService;
     private final ProfessionalProfileCommandService professionalProfileCommandService;
+    private final PatientProfileQueryService patientProfileQueryService;
 
     public ProfilesContextFacadeImpl(PatientProfileCommandService patientProfileCommandService,
-                                     ProfessionalProfileCommandService professionalProfileCommandService) {
+                                     ProfessionalProfileCommandService professionalProfileCommandService, PatientProfileQueryService patientProfileQueryService) {
         this.patientProfileCommandService = patientProfileCommandService;
         this.professionalProfileCommandService = professionalProfileCommandService;
+        this.patientProfileQueryService = patientProfileQueryService;
     }
 
     //#endregion
@@ -41,5 +45,12 @@ public class ProfilesContextFacadeImpl implements ProfilesContextFacade {
         return exists;
     }
 
-
+    @Override
+    public Long fetchClinicalHistoryIdByPatientId(Long patientId) {
+        if(this.verifyPatientProfile(patientId)){
+            var getClinicalHistoryIdByPatientIdQuery = new GetClinicalHistoryIdByPatientIdQuery(patientId);
+            return patientProfileQueryService.handle(getClinicalHistoryIdByPatientIdQuery);
+        }
+        return null;
+    }
 }
