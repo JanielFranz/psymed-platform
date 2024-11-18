@@ -63,7 +63,6 @@ public class Session extends AbstractAggregateRoot<Session> {
     @LastModifiedDate
     @Column(nullable = false)
     private Date updatedAt;
-
     protected Session() {}
 
     /**
